@@ -1,0 +1,27 @@
+# Data files (too large for git)
+data/raw/
+data/splits/
+data/processed/*.joblib
+dataset/
+
+# Model checkpoints
+*.pt
+baseline_model/checkpoints/training_history_*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
