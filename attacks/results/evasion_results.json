@@ -1,0 +1,49 @@
+{
+  "total_samples": 100,
+  "total_evaded": 100,
+  "overall_evasion_rate": 100.0,
+  "per_attack_type": {
+    "DDoS": {
+      "total": 43,
+      "evaded": 43,
+      "evasion_rate": 100.0
+    },
+    "DoS Hulk": {
+      "total": 45,
+      "evaded": 45,
+      "evasion_rate": 100.0
+    },
+    "DoS Slowhttptest": {
+      "total": 2,
+      "evaded": 2,
+      "evasion_rate": 100.0
+    },
+    "DoS slowloris": {
+      "total": 1,
+      "evaded": 1,
+      "evasion_rate": 100.0
+    },
+    "FTP-Patator": {
+      "total": 1,
+      "evaded": 1,
+      "evasion_rate": 100.0
+    },
+    "PortScan": {
+      "total": 6,
+      "evaded": 6,
+      "evasion_rate": 100.0
+    },
+    "SSH-Patator": {
+      "total": 1,
+      "evaded": 1,
+      "evasion_rate": 100.0
+    },
+    "Web Attack \ufffd Brute Force": {
+      "total": 1,
+      "evaded": 1,
+      "evasion_rate": 100.0
+    }
+  },
+  "perturbation_l2_mean": 0.6728,
+  "perturbation_l2_median": 0.5142
+}

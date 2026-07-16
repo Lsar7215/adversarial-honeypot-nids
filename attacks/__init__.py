@@ -1,0 +1,1 @@
+# Empty. Makes attacks/ importable for python package.

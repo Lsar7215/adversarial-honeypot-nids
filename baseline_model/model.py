@@ -32,6 +32,7 @@ class MLPClassifier(nn.Module):
 
     # Data from this funtion will get sent to CrossEntropyLoss, which used to compute the loss for training.
     def forward(self, x):
+        x = x.float()  # ensure the input is float32, since the model was trained on float32
         x = self.layers(x)
         raw = self.output(x)
         return raw
