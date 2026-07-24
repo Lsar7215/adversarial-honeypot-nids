@@ -7,6 +7,7 @@ Test with:
 
 from pathlib import Path
 
+from sympy import python
 import torch
 import torch.nn as nn
 from sklearn.metrics import f1_score
@@ -15,6 +16,8 @@ from torch.utils.data import DataLoader
 from baseline_model.dataset import NIDSDataset, load_feature_columns
 from baseline_model.model import MLPClassifier
 from baseline_model.utils import set_seed, get_device
+
+import json
 
 
 def run_epoch(model, loader, loss_fn, device, optimizer=None):
@@ -81,7 +84,12 @@ def main():
     ).to(device)
 
     # Loss + optimizer
-    loss_fn = nn.CrossEntropyLoss()
+    # update with class weights to handle class imbalance
+    with open("data/processed/class_weights_binary.json") as f:
+        weights = json.load(f)
+    class_weights = torch.tensor([weights["0"], weights["1"]], dtype=torch.float32).to(device)
+    loss_fn = nn.CrossEntropyLoss(weight=class_weights)
+    print(f"Class weights: {class_weights.tolist()}")
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
     # Train
@@ -105,8 +113,27 @@ def main():
         "model_state_dict": model.state_dict(),
         "input_dim": train_ds.num_features,
         "num_classes": 2,
+        "dropout": 0.3,
     }, save_path)
     print(f"Saved model to {save_path}")
+
+    """ 
+        python -c "
+        import json
+        with open('data/processed/class_weights_binary.json') as f:
+            w = json.load(f)
+        print(f'Benign weight:    {w[\"0\"]:.4f}')
+        print(f'Malicious weight: {w[\"1\"]:.4f}')
+        print(f'Ratio:            {w[\"1\"]/w[\"0\"]:.1f}x')
+
+        this is for calculating class weights
+        weight = total_samples / (num_classes * class_count)
+
+        benign:    2,520,798 / (2 * 2,095,057) ~= 0.60
+        malicious: 2,520,798 / (2 * 425,741)   ~= 2.96
+
+        ratio: 2.96 / 0.60 ~= 4.9x
+    """
 
 
 if __name__ == "__main__":
