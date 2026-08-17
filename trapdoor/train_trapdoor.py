@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 
 
 def create_poisoned_batch(features, labels, trapdoor_config, poison_ratio=0.10):
@@ -26,11 +27,18 @@ def create_poisoned_batch(features, labels, trapdoor_config, poison_ratio=0.10):
     selected_patterns = torch.randint(0, K, (num_poison,), device=features.device)
 
     # Apply patterns
-    for i in range(num_poison):
-        k = selected_patterns[i].item()
-        poison_features[i] = trapdoor_config.apply_pattern(
-        poison_features[i], k
-    )
+    # for i in range(num_poison):
+    #     k = selected_patterns[i].item()
+    #     poison_features[i] = trapdoor_config.apply_pattern(
+    #     poison_features[i], k
+    # )
+        
+    # Apply patterns — one indexed add instead of a per-sample loop
+    all_patterns = torch.tensor(
+        np.stack(trapdoor_config.patterns),
+        dtype=torch.float32, device=features.device,
+    ) # (K, 78)
+    poison_features = poison_features + all_patterns[selected_patterns]
         
     # Combine: original batch + poisoned samples
     combined_features = torch.cat([features, poison_features], dim=0)
@@ -76,7 +84,7 @@ def compute_trapdoor_loss(activations, is_poisoned, pattern_indices, target_sign
 
 def train_with_trapdoor(
     model, train_loader, val_loader, trapdoor_config,
-    device, epochs=30, lr=0.001, lambda_td=0.1,
+    device, epochs=10, lr=0.001, lambda_td=0.1,
     poison_ratio=0.10, class_weights=None,
     ):
     
@@ -100,9 +108,7 @@ def train_with_trapdoor(
             features, labels = features.to(device), labels.to(device)
  
             # Create poisoned batch
-            combined_features, combined_labels, is_poisoned, pattern_idx = \
-                create_poisoned_batch(features, labels, trapdoor_config,
-                                     poison_ratio)
+            combined_features, combined_labels, is_poisoned, pattern_idx = create_poisoned_batch(features, labels, trapdoor_config, poison_ratio)
             combined_features = combined_features.to(device)
             combined_labels = combined_labels.to(device)
             is_poisoned = is_poisoned.to(device)
@@ -120,14 +126,8 @@ def train_with_trapdoor(
             if not target_signatures:
                 layer_size = activations[trapdoor_config.target_layer].shape[1]
                 for k in range(trapdoor_config.num_trapdoors):
-                    # Random target: what we want the activations to look like
-                    target_signatures[k] = torch.randn(
-                        layer_size, device=device
-                    )
-                    # Normalize to unit length
-                    target_signatures[k] = torch.nn.functional.normalize(
-                        target_signatures[k], dim=0
-                    )
+                    target_signatures[k] = torch.rand(layer_size, device=device) * 1.2
+                    
  
             # Trapdoor activation loss (on poisoned samples only)
             td_loss = compute_trapdoor_loss(
@@ -157,6 +157,14 @@ def train_with_trapdoor(
 
 # Record the activation signature for each trapdoor pattern
 # Returns signatures: dict {0: tensor(64,), 1: tensor(64,), ..., K-1: tensor(64,)}
+# 
+# NOTE: To me in a few months, DO NOT decorated with @torch.no_grad()
+# trapdoor_preservation_loss() calls this inside the co-training loss and
+# needs gradients to flow back through it. Adding the decorator would detach
+# the result from the graph, so the preservation term would silently become a
+# constant and contribute nothing to training ! with no error raised !
+# When calling this for measurement only (signature recording, detector setup),
+# wrap the call site in `with torch.no_grad():` instead
 def record_signatures(model, trapdoor_config, clean_features, device, num_samples=500):
     signatures = {}
     target_layer = trapdoor_config.target_layer
