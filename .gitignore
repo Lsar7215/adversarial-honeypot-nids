@@ -25,3 +25,9 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+diag_test.py
+test_config.py
+test_poison.py
+test_train_trapdoor.py
+test_vectorised.py
+test_detector.py
