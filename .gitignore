@@ -15,6 +15,12 @@ __pycache__/
 .venv/
 venv/
 *.egg-info/
+diag_test.py
+test_config.py
+test_poison.py
+test_train_trapdoor.py
+test_vectorised.py
+test_detector.py
 
 # IDE
 .vscode/
@@ -25,9 +31,3 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
-diag_test.py
-test_config.py
-test_poison.py
-test_train_trapdoor.py
-test_vectorised.py
-test_detector.py
