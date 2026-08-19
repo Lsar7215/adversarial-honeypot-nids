@@ -7,8 +7,8 @@
     "false_positives": 9920,
     "final_cls_loss": 0.0563,
     "final_td_loss": 0.1481,
-    "tpi": 0.13066076493123546,
-    "train_time_minutes": 8.017953050136565
+    "tpi": 0.2906891703605652,
+    "train_time_minutes": 7.965795731544494
   },
   {
     "K": 5,
@@ -18,8 +18,8 @@
     "false_positives": 10109,
     "final_cls_loss": 0.0587,
     "final_td_loss": 0.1682,
-    "tpi": 0.15796103364264127,
-    "train_time_minutes": 14.353427453835804
+    "tpi": 0.3648172736167908,
+    "train_time_minutes": 13.615901684761047
   },
   {
     "K": 10,
@@ -29,7 +29,7 @@
     "false_positives": 11855,
     "final_cls_loss": 0.0613,
     "final_td_loss": 0.1614,
-    "tpi": 0.14085018659534398,
-    "train_time_minutes": 19.865229034423827
+    "tpi": 0.3419169902801514,
+    "train_time_minutes": 21.4748743613561
   }
 ]
