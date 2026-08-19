@@ -1,0 +1,16 @@
+{
+  "K": 10,
+  "checkpoint": "experiments/checkpoints/trapdoor_K10.pt",
+  "n_samples": 100,
+  "evasion_rate": 100.0,
+  "perturbation_l2_mean": 0.2277759611606598,
+  "perturbation_l2_median": 0.2526894509792328,
+  "total_queries": 2444800,
+  "queries_per_sample": 24448.0,
+  "control_mse_mean": 0.17247833862900733,
+  "adv_mse_mean": 0.06253074668347836,
+  "control_cos_mean": 0.5793842294812203,
+  "adv_cos_mean": 0.8592573049664497,
+  "mse_shift": 0.10994759194552897,
+  "cos_shift": 0.27987307548522944
+}
