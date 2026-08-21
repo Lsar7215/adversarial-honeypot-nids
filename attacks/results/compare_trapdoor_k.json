@@ -1,0 +1,41 @@
+[
+  {
+    "K": 1,
+    "threshold": 0.6975492835044861,
+    "control_fp_test": 0.01,
+    "control_sim_mean": 0.5023259520530701,
+    "detection_mean": 0.8033333333333333,
+    "detection_min": 0.8,
+    "detection_max": 0.81,
+    "evasion_mean": 1.0,
+    "perturbation_l2_mean": 0.6480774879455566,
+    "queries_per_sample": 24449.016666666666,
+    "n_runs": 3
+  },
+  {
+    "K": 5,
+    "threshold": 0.748101532459259,
+    "control_fp_test": 0.0,
+    "control_sim_mean": 0.5494146347045898,
+    "detection_mean": 0.9466666666666667,
+    "detection_min": 0.94,
+    "detection_max": 0.95,
+    "evasion_mean": 1.0,
+    "perturbation_l2_mean": 0.3043905198574066,
+    "queries_per_sample": 24449.003333333334,
+    "n_runs": 3
+  },
+  {
+    "K": 10,
+    "threshold": 0.7509012222290039,
+    "control_fp_test": 0.01,
+    "control_sim_mean": 0.5954522490501404,
+    "detection_mean": 0.98,
+    "detection_min": 0.97,
+    "detection_max": 0.99,
+    "evasion_mean": 1.0,
+    "perturbation_l2_mean": 0.22126937905947366,
+    "queries_per_sample": 24449.0,
+    "n_runs": 3
+  }
+]

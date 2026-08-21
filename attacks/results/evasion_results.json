@@ -34,6 +34,6 @@
       "evasion_rate": 100.0
     }
   },
-  "perturbation_l2_mean": 0.7439,
-  "perturbation_l2_median": 0.2914
+  "perturbation_l2_mean": 0.7161,
+  "perturbation_l2_median": 0.2882
 }

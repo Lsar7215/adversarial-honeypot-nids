@@ -29,6 +29,19 @@ from baseline_model.utils import set_seed, get_device
 from preprocessing.schema import LABEL_BINARY_COL, ATTACK_TYPE_COL
 
 
+# Counts model queries by intercepting the ART classifier's predict func
+class QueryCounter:
+
+    def __init__(self, art_model):
+        self.art_model = art_model
+        self.queries = 0
+        self._orig = art_model.predict
+        art_model.predict = self._counting
+
+    def _counting(self, x, **kwargs):
+        self.queries += len(x)
+        return self._orig(x, **kwargs)
+
 # Same logic as evaluate.py, rebuild the model from 
 # checkpoint specs then load the saved weights
 
@@ -246,6 +259,7 @@ def main():
     # Wrap for ART
     print("\nWrapping model for ART\n")
     art_model = wrap_model_for_art(model, input_dim, num_classes, art_device)
+    counter = QueryCounter(art_model)
     print("Model wrapped\n")
  
     # Load malicious samples
@@ -261,6 +275,7 @@ def main():
     evasion_results = measure_evasion(art_model, features, results, attack_types)
     
     # Save results
+    print(f"Model queries: {counter.queries:,} total, " f"{counter.queries/len(features):,.0f} per sample")
     out_path = Path("attacks/results/evasion_results.json")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w") as f:
