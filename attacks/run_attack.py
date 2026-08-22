@@ -233,7 +233,7 @@ def measure_evasion(art_model, original_features, adversarial_features, attack_t
 
 def main():
     # Config
-    CHECKPOINT = Path("baseline_model/checkpoints/model.pt")
+    CHECKPOINT = Path("experiments/checkpoints/pgd_adversarial.pt")
     SPLITS_DIR = Path("data/splits")
     PROCESSED_DIR = Path("data/processed")
     MAX_SAMPLES = 100        
@@ -245,19 +245,18 @@ def main():
     
     # Hopskipjump is query based (not gradient based), so GPU doesn't help much
     art_device = torch.device("cpu")
-    
     print(f"Compute device: {device}")
     print(f"ART device: {art_device}")
     
     # Load model
-    print("\nLoading model")
+    print("Loading model")
     model, ckpt = load_model(CHECKPOINT, art_device)
     input_dim = ckpt["input_dim"]
     num_classes = ckpt.get("num_classes", 2)
-    print(f"\nModel loaded: input_dim={input_dim}, num_classes={num_classes}\n")
+    print(f"Model loaded from {CHECKPOINT}: input_dim={input_dim}, num_classes={num_classes}")
     
     # Wrap for ART
-    print("\nWrapping model for ART\n")
+    print("Wrapping model for ART\n")
     art_model = wrap_model_for_art(model, input_dim, num_classes, art_device)
     counter = QueryCounter(art_model)
     print("Model wrapped\n")

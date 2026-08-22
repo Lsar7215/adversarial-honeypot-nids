@@ -8,7 +8,7 @@
     "final_cls_loss": 0.0563,
     "final_td_loss": 0.1481,
     "tpi": 0.2906891703605652,
-    "train_time_minutes": 7.965795731544494
+    "train_time_minutes": 8.081226833661397
   },
   {
     "K": 5,
@@ -19,7 +19,7 @@
     "final_cls_loss": 0.0587,
     "final_td_loss": 0.1682,
     "tpi": 0.3648172736167908,
-    "train_time_minutes": 13.615901684761047
+    "train_time_minutes": 13.166886536280314
   },
   {
     "K": 10,
@@ -30,6 +30,6 @@
     "final_cls_loss": 0.0613,
     "final_td_loss": 0.1614,
     "tpi": 0.3419169902801514,
-    "train_time_minutes": 21.4748743613561
+    "train_time_minutes": 19.41744165023168
   }
 ]
